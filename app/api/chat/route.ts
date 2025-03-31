@@ -22,7 +22,6 @@ export async function POST(req: Request) {
       value: lastMessage.content,
     });
 
-    console.log({ embedding: embedding.embedding });
     try {
       const { data: embeddings, error: embeddingsError } = await supabase.rpc(
         'match_documents',
@@ -33,13 +32,17 @@ export async function POST(req: Request) {
         }
       );
 
+      console.log({ embeddings });
+
       if (embeddingsError) {
         console.error('Supabase RPC Error:', embeddingsError);
       }
 
       const context = embeddings
-        ?.map((embedding: { text: string }) => embedding.text)
+        ?.map((embedding: { content: string }) => embedding.content)
         .join('\n');
+
+      console.log({ context });
 
       const safeContext = context ?? 'No context found.';
 
