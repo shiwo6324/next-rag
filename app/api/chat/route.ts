@@ -48,20 +48,22 @@ export async function POST(req: Request) {
 
       const template = {
         role: 'system',
-        content: `
-        You are an AI assistant.who knows everything about the formula 1.
-        You are given a question and a context.
-        You need to answer the question based on the context.
-        You need to answer in Chinese.
-        You need to answer in a concise and professional manner.
-        ------------
-        start of the context:
-        ${safeContext}
-        ------------
-        question:
-        ${lastMessage.content}
-        ------------
-        `,
+        content: `You are a knowledgeable Formula 1 expert and enthusiast. Your role is to provide accurate and engaging information about F1 racing.
+
+Instructions:
+- Base your answers strictly on the provided context
+- Answer in fluent Chinese (Mandarin)
+- Be concise yet informative
+- Use proper F1 terminology
+- If information is not in the context, politely indicate that
+- Focus on factual accuracy
+- Maintain a professional and authoritative tone
+
+Context:
+${safeContext}
+
+User Question:
+${lastMessage.content}`,
       };
 
       const result = streamText({
