@@ -5,12 +5,13 @@ import { embed } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { PuppeteerWebBaseLoader } from '@langchain/community/document_loaders/web/puppeteer';
 
-const { SUPABASE_URL, SUPABASE_KEY, OPENAI_API_KEY } = process.env;
+const { SUPABASE_URL, SUPABASE_KEY, OPENAI_API_KEY, OPENAI_BASE_URL } =
+  process.env;
 
 const supabase = createClient(SUPABASE_URL!, SUPABASE_KEY!);
 
 const openai = createOpenAI({
-  baseURL: 'https://api.vveai.com/v1/',
+  baseURL: OPENAI_BASE_URL,
   apiKey: OPENAI_API_KEY,
 });
 
@@ -56,7 +57,7 @@ const loadSampleData = async () => {
         // 步骤 3.2: 将文本块和其对应的嵌入向量插入到 Supabase 数据库的 'documents' 表中
         const { data, error } = await supabase.from('documents').insert({
           embedding: vector, // 嵌入向量
-          text: chunk, // 原始文本块
+          content: chunk, // 原始文本块
         });
 
         // 检查插入操作是否出错
